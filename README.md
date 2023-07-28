@@ -6,13 +6,13 @@
 
 ### Backend
 
-- [ ] Fonction de liste des activités 
-- [ ] Fonction d'ajout, edition, suppression des activités
+- [x] Fonction de liste des activités 
+- [x] Fonction d'ajout, edition, suppression des activités
 - [ ] Fonction d'envoi de SMS (api free mobile pour le POC)
 - [ ] Fonction d'envoi d'email
-- [ ] développement de la base de données d'activités sur Paris, Grenoble, Morlaix, Montpellier, Nantes
+- [ ] Développement de la base de données d'activités sur Paris, Grenoble, Morlaix, Montpellier, Nantes
 
 ### Frontend (mobile friendly)
 
-- [ ] Interface de liste des activités filtrées par localisation 
-- [ ] Interface d'ajout, edition, suppression des activités
+- [x] Interface de liste des activités filtrées par localisation 
+- [x] Interface d'ajout, edition, suppression des activités

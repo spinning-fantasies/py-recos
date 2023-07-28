@@ -15,15 +15,25 @@ if not os.path.exists(DB_NAME):
 
 @app.route('/')
 def index():
+    location_id = request.args.get('location', None)  # Get the location ID from query parameters
+
     with sqlite3.connect(DB_NAME) as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM activities")
-        activities = cursor.fetchall()
 
+        # Fetch the locations for the location selector
         cursor.execute("SELECT * FROM locations")
         locations = cursor.fetchall()
 
+        # Fetch activities filtered by the selected location (if provided)
+        if location_id is not None:
+            cursor.execute("SELECT * FROM activities WHERE is_deleted = 0 AND location_id = ?", (location_id,))
+        else:
+            cursor.execute("SELECT * FROM activities WHERE is_deleted = 0")
+
+        activities = cursor.fetchall()
+
     return render_template('index.html', activities=activities, locations=locations)
+
 
 
 @app.route('/activity/add', methods=['GET', 'POST'])

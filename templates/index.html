@@ -10,27 +10,19 @@
         <div class="container">
             <h1 class="title">Activités et Localisations</h1>
 
-            <h2 class="subtitle">Localisations</h2>
-            <table class="table is-fullwidth">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nom</th>
-                        <th>Latitude</th>
-                        <th>Longitude</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for location in locations %}
-                        <tr>
-                            <td>{{ location[0] }}</td>
-                            <td>{{ location[1] }}</td>
-                            <td>{{ location[2] }}</td>
-                            <td>{{ location[3] }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <h2 class="subtitle">Filtrer par Localisation</h2>
+            <div class="field">
+                <div class="control">
+                    <div class="select">
+                        <select id="location-select">
+                            <option value="">Toutes les localisations</option>
+                            {% for location in locations %}
+                                <option value="{{ location[0] }}">{{ location[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
 
             <h2 class="subtitle">Activités</h2>
             <table class="table is-fullwidth">
@@ -45,10 +37,10 @@
                         <th>Actions</th> <!-- New column for the actions -->
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="activities-table">
                     {% for activity in activities %}
                         {% if not activity[6] %}  <!-- Check if is_deleted is False (0) -->
-                            <tr>
+                            <tr data-location="{{ activity[5] }}">
                                 <td>{{ activity[0] }}</td>
                                 <td>{{ activity[1] }}</td>
                                 <td>{{ activity[2] }}</td>
@@ -75,5 +67,33 @@
             <a href="/activity/add" class="button is-primary">Ajouter une activité</a>
         </div>
     </section>
+
+    <script>
+        // Function to filter activities based on selected location
+        function filterActivitiesByLocation() {
+            const locationSelect = document.getElementById("location-select");
+            const selectedLocation = locationSelect.value;
+            const activitiesTable = document.getElementById("activities-table").getElementsByTagName("tr");
+            
+            for (const activityRow of activitiesTable) {
+                const activityLocation = activityRow.getAttribute("data-location");
+
+                // Show all rows when no location is selected
+                if (selectedLocation === "") {
+                    activityRow.style.display = "table-row";
+                } else {
+                    // Hide rows with different locations
+                    if (activityLocation === selectedLocation) {
+                        activityRow.style.display = "table-row";
+                    } else {
+                        activityRow.style.display = "none";
+                    }
+                }
+            }
+        }
+
+        // Event listener to call filterActivitiesByLocation() on location select change
+        document.getElementById("location-select").addEventListener("change", filterActivitiesByLocation);
+    </script>
 </body>
 </html>
