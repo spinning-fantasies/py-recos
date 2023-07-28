@@ -4,7 +4,7 @@
 
 ## TODO LIST
 
-### Backend : 
+### Backend
 
 - [] Fonction de liste des activités 
 - [] Fonction d'ajout, edition, suppression des activités
