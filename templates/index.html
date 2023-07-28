@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Activités et Localisations</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Activités et Localisations</h1>
+
+            <h2 class="subtitle">Localisations</h2>
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for location in locations %}
+                        <tr>
+                            <td>{{ location[0] }}</td>
+                            <td>{{ location[1] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h2 class="subtitle">Activités</h2>
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>Heure</th>
+                        <th>Localisation ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for activity in activities %}
+                        <tr>
+                            <td>{{ activity[0] }}</td>
+                            <td>{{ activity[1] }}</td>
+                            <td>{{ activity[2] }}</td>
+                            <td>{{ activity[3] }}</td>
+                            <td>{{ activity[4] }}</td>
+                            <td>{{ activity[5] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h2 class="subtitle">Ajouter une Activité</h2>
+            <a href="/activity/add" class="button is-primary">Ajouter une activité</a>
+        </div>
+    </section>
+</body>
+</html>
