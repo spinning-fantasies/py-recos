@@ -16,3 +16,25 @@
 
 - [x] Interface de liste des activités filtrées par localisation 
 - [x] Interface d'ajout, edition, suppression des activités
+
+
+## Usage
+
+Install the dependency:
+
+```
+pip install flask
+```
+
+Run the ``app.py`` script to create the SQLite database and tables using schema.sql:
+
+```
+python app.py
+```
+
+This will create the ``activities.db`` file in the project directory and initialize the tables.
+
+The Flask server should be up and running. Open your web browser and go to http://127.0.0.1:5000
+
+
+
