@@ -51,5 +51,43 @@ def add_activity():
 
     return render_template('add_activity.html', locations=locations)
 
+@app.route('/activity/edit/<int:activity_id>', methods=['GET', 'POST'])
+def edit_activity(activity_id):
+    if request.method == 'POST':
+        name = request.form['name']
+        description = request.form['description']
+        date = request.form['date']
+        time = request.form['time']
+        location_id = request.form['location']
+
+        with sqlite3.connect(DB_NAME) as conn:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE activities SET name=?, description=?, date=?, time=?, location_id=? WHERE id=?",
+                           (name, description, date, time, location_id, activity_id))
+            conn.commit()
+
+        return redirect(url_for('index'))
+
+    # Fetch the activity to display in the form for editing
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM activities WHERE id=?", (activity_id,))
+        activity = cursor.fetchone()
+
+        cursor.execute("SELECT * FROM locations")
+        locations = cursor.fetchall()
+
+    return render_template('edit_activity.html', activity=activity, locations=locations)
+
+@app.route('/activity/delete/<int:id>')
+def delete_activity(id):
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute("UPDATE activities SET is_deleted = 1 WHERE id = ?", (id,))
+        conn.commit()
+
+    return redirect(url_for('index'))
+
+
 if __name__ == '__main__':
     app.run(debug=True)

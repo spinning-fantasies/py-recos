@@ -3,6 +3,7 @@
 <head>
     <title>Activités et Localisations</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <section class="section">
@@ -15,6 +16,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Nom</th>
+                        <th>Latitude</th>
+                        <th>Longitude</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -22,6 +25,8 @@
                         <tr>
                             <td>{{ location[0] }}</td>
                             <td>{{ location[1] }}</td>
+                            <td>{{ location[2] }}</td>
+                            <td>{{ location[3] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -37,23 +42,36 @@
                         <th>Date</th>
                         <th>Heure</th>
                         <th>Localisation ID</th>
+                        <th>Actions</th> <!-- New column for the actions -->
                     </tr>
                 </thead>
                 <tbody>
                     {% for activity in activities %}
-                        <tr>
-                            <td>{{ activity[0] }}</td>
-                            <td>{{ activity[1] }}</td>
-                            <td>{{ activity[2] }}</td>
-                            <td>{{ activity[3] }}</td>
-                            <td>{{ activity[4] }}</td>
-                            <td>{{ activity[5] }}</td>
-                        </tr>
+                        {% if not activity[6] %}  <!-- Check if is_deleted is False (0) -->
+                            <tr>
+                                <td>{{ activity[0] }}</td>
+                                <td>{{ activity[1] }}</td>
+                                <td>{{ activity[2] }}</td>
+                                <td>{{ activity[3] }}</td>
+                                <td>{{ activity[4] }}</td>
+                                <td>{{ activity[5] }}</td>
+                                <td>
+                                    <a href="/activity/edit/{{ activity[0] }}" class="has-text-primary">
+                                        <span class="icon">
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                    </a>
+                                    <a href="/activity/delete/{{ activity[0] }}" class="has-text-danger">
+                                        <span class="icon">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </span>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
-
-            <h2 class="subtitle">Ajouter une Activité</h2>
             <a href="/activity/add" class="button is-primary">Ajouter une activité</a>
         </div>
     </section>

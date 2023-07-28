@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS activities (
     date DATE,
     time TIME,
     location_id INTEGER,
+    is_deleted INTEGER DEFAULT 0,  -- New column for soft deletion
     FOREIGN KEY (location_id) REFERENCES locations(id)
 );
 

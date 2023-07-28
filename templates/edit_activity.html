@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modifier une Activité</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Modifier une Activité</h1>
+
+            <form method="POST" action="/activity/edit/{{ activity[0] }}">
+                <div class="field">
+                    <label class="label">Nom</label>
+                    <div class="control">
+                        <input class="input" type="text" name="name" value="{{ activity[1] }}" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Description</label>
+                    <div class="control">
+                        <textarea class="textarea" name="description">{{ activity[2] }}</textarea>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Date</label>
+                    <div class="control">
+                        <input class="input" type="date" name="date" value="{{ activity[3] }}" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Heure</label>
+                    <div class="control">
+                        <input class="input" type="time" name="time" value="{{ activity[4] }}" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Localisation</label>
+                    <div class="control">
+                        <div class="select">
+                            <select name="location">
+                                {% for location in locations %}
+                                    <option value="{{ location[0] }}" {% if location[0] == activity[5] %}selected{% endif %}>{{ location[1] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button type="submit" class="button is-primary">Sauvegarder</button>
+                    </div>
+                    <div class="control">
+                        <a href="/" class="button is-light">Annuler</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</body>
+</html>
