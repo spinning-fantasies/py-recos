@@ -14,12 +14,18 @@ mail_server = os.getenv("MAIL_SERVER")
 mail_username = os.getenv("MAIL_USERNAME")
 mail_password = os.getenv("MAIL_PASSWORD")
 mail_recipient = os.getenv("MAIL_RECIPIENT")
+sms_api_url = os.getenv("SMS_API_URL")
+sms_api_user = os.getenv("SMS_API_USER")
+sms_api_password = os.getenv("SMS_API_PASSWORD")
+
 
 # Utiliser les variables d'environnement dans votre code
 print(f"Server: {mail_server}")
-print(f"Username: {mail_username }")
+print(f"Mail username: {mail_username }")
 print(f"Password: {mail_password}")
 print(f"Recipient: {mail_recipient}")
+print(f"SMS API User: {sms_api_user }")
+print(f"SMS API Password: {sms_api_password }")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secret_key  # Replace with a secure secret key
@@ -162,19 +168,40 @@ def send_email():
     return redirect(url_for('index'))
 
 @app.route('/send_sms')
-def send_sms():
-    # URL of the external web service you want to call
-    url = os.getenv("URL_SMS_API")  # Replace this with the actual API URL
+def send_sms(user, password, msg):
+    try:
+        base_url = 'https://smsapi.free-mobile.fr/sendmsg/'
+        params = {
+            'user': user,
+            'password': password,
+            'msg': msg
+        }
 
-    # Make the GET request to the external API
-    response = requests.get(url)
+        response = requests.get(base_url, params=params)
+        print(response)
 
-    if response.status_code == 200:  # Successful GET request
-        data = response.json()
-        return jsonify(data)  # Return the JSON response as a Flask JSON response
-    else:
-        return jsonify({'message': 'Failed to fetch data from the external API.'}), 500
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            data = response.json()  # Assuming the response contains JSON data
+            return data
+        else:
+            print(f"Request failed with status code: {response.status_code}")
+            return None
 
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+        return None
+    
+user = sms_api_user
+password = sms_api_password
+msg = "Hello from Python !"
+
+# Replace 'YOUR_API_URL' with the actual base URL you want to make the GET request to
+response_data = send_sms(user, password, msg)
+
+if response_data:
+    # Process and use the response data here
+    print(response_data)
 
 if __name__ == '__main__':
     app.run(debug=True)
