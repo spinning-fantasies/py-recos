@@ -193,9 +193,11 @@ def send_sms():
 
         # Check if the request was successful (status code 200)
         if response.status_code == 200:
-            return f"GET request successful! Response: {response.text}", 200
+            flash('SMS sent successfully!', 'success')
+            return redirect(url_for('index'))
         else:
-            return f"GET request failed. Status code: {response.status_code}", 500
+            flash(f'Failed to send email. Error: {str(e)}', 'danger')
+            return redirect(url_for('index'))
 
     except requests.exceptions.RequestException as e:
         # Handle any exception that occurred during the request
