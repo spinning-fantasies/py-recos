@@ -8,15 +8,28 @@ from dotenv import load_dotenv
 # Charge les variables d'environnement depuis le fichier .env
 load_dotenv()
 
+# Accéder aux variables d'environnement
+secret_key = os.getenv("SECRET_KEY")
+mail_server = os.getenv("MAIL_SERVER")
+mail_username = os.getenv("MAIL_USERNAME")
+mail_password = os.getenv("MAIL_PASSWORD")
+mail_recipient = os.getenv("MAIL_RECIPIENT")
+
+# Utiliser les variables d'environnement dans votre code
+print(f"Server: {mail_server}")
+print(f"Username: {mail_username }")
+print(f"Password: {mail_password}")
+print(f"Recipient: {mail_recipient}")
+
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")  # Replace with a secure secret key
+app.config['SECRET_KEY'] = secret_key  # Replace with a secure secret key
 
 # Configuration for Flask-Mail
 app.config['MAIL_SERVER'] = os.getenv("MAIL_SERVER")
 app.config['MAIL_PORT'] = 25  # Use the appropriate port for your mail server
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.getenv("MAIL_USERNAME")
-app.config['MAIL_PASSWORD'] = os.getenv("PASSWORD")
+app.config['MAIL_USERNAME'] = mail_server
+app.config['MAIL_PASSWORD'] = mail_password
 app.config['MAIL_DEFAULT_SENDER'] = 'g'
 
 mail = Mail(app)
@@ -49,7 +62,8 @@ def index():
 
         activities = cursor.fetchall()
 
-    return render_template('index.html', activities=activities, locations=locations, location_id=int(location_id))
+        print(type(location_id))
+    return render_template('index.html', activities=activities, locations=locations, location_id=location_id)
 
 @app.route('/activity/add', methods=['GET', 'POST'])
 def add_activity():
@@ -132,7 +146,7 @@ def send_email():
 
         activities = cursor.fetchall()
 
-    recipient = os.getenv("MAIL_RECIPIENT")
+    recipient = mail_recipient
     subject = activities[0][1]
     body = activities[0][2]
 
