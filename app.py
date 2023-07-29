@@ -8,12 +8,12 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yolo'  # Replace with a secure secret key
 
 # Configuration for Flask-Mail
-app.config['MAIL_SERVER'] = 'mail.gandi.net'
+app.config['MAIL_SERVER'] = ''
 app.config['MAIL_PORT'] = 25  # Use the appropriate port for your mail server
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'vieille-branche@spinning-fantasies.org'
-app.config['MAIL_PASSWORD'] = '3Ro34!kEy5AE&JEN'
-app.config['MAIL_DEFAULT_SENDER'] = 'vieille-branche@spinning-fantasies.org'
+app.config['MAIL_USERNAME'] = ''
+app.config['MAIL_PASSWORD'] = ''
+app.config['MAIL_DEFAULT_SENDER'] = 'g'
 
 mail = Mail(app)
 
