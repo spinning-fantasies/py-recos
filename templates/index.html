@@ -24,7 +24,7 @@
             <div class="field">
                 <div class="control">
                     <div class="select">
-                        <select id="location-select">
+                        <select id="locationSelect">
                             <option value="">Toutes les localisations</option>
                             {% for location in locations %}
                                 <option value="{{ location[0] }}">{{ location[1] }}</option>
@@ -81,31 +81,24 @@
     </section>
 
     <script>
-        // Function to filter activities based on selected location
-        function filterActivitiesByLocation() {
-            const locationSelect = document.getElementById("location-select");
-            const selectedLocation = locationSelect.value;
-            const activitiesTable = document.getElementById("activities-table").getElementsByTagName("tr");
-            
-            for (const activityRow of activitiesTable) {
-                const activityLocation = activityRow.getAttribute("data-location");
-
-                // Show all rows when no location is selected
-                if (selectedLocation === "") {
-                    activityRow.style.display = "table-row";
-                } else {
-                    // Hide rows with different locations
-                    if (activityLocation === selectedLocation) {
-                        activityRow.style.display = "table-row";
-                    } else {
-                        activityRow.style.display = "none";
-                    }
-                }
-            }
-        }
-
-        // Event listener to call filterActivitiesByLocation() on location select change
-        document.getElementById("location-select").addEventListener("change", filterActivitiesByLocation);
-    </script>
+        document.getElementById('locationSelect').addEventListener('change', function () {
+          const selectElement = document.getElementById('locationSelect');
+          const selectedValue = selectElement.value;
+      
+          // Get the current URL parameters
+          const urlParams = new URLSearchParams(window.location.search);
+      
+          // Update the 'location' parameter with the selected value
+          urlParams.set('location', selectedValue);
+      
+          // Build the new URL with the updated parameter
+          const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+      
+          // Reload the page with the updated URL
+          window.location.href = newUrl;
+        });
+      </script>
+      
+      
 </body>
 </html>
