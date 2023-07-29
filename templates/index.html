@@ -27,7 +27,7 @@
                         <select id="locationSelect">
                             <option value="">Toutes les localisations</option>
                             {% for location in locations %}
-                                <option value="{{ location[0] }}">{{ location[1] }}</option>
+                                <option value="{{ location[0] }}"{% if location[0] == location_id %} selected{% endif %}>{{ location[1] }}</option>
                             {% endfor %}
                         </select>
                     </div>
