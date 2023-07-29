@@ -1,8 +1,20 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_mail import Mail, Message
 import sqlite3
 import os
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'yolo'  # Replace with a secure secret key
+
+# Configuration for Flask-Mail
+app.config['MAIL_SERVER'] = 'mail.gandi.net'
+app.config['MAIL_PORT'] = 25  # Use the appropriate port for your mail server
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'vieille-branche@spinning-fantasies.org'
+app.config['MAIL_PASSWORD'] = '3Ro34!kEy5AE&JEN'
+app.config['MAIL_DEFAULT_SENDER'] = 'vieille-branche@spinning-fantasies.org'
+
+mail = Mail(app)
 
 # Configuration for SQLite database
 DB_NAME = "activities.db"
@@ -33,8 +45,6 @@ def index():
         activities = cursor.fetchall()
 
     return render_template('index.html', activities=activities, locations=locations)
-
-
 
 @app.route('/activity/add', methods=['GET', 'POST'])
 def add_activity():
@@ -98,6 +108,38 @@ def delete_activity(id):
 
     return redirect(url_for('index'))
 
+@app.route('/send_email')
+def send_email():
+    location_id = request.args.get('location', None)  # Get the location ID from query parameters
+
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
+
+        # Fetch the locations for the location selector
+        cursor.execute("SELECT * FROM locations")
+        locations = cursor.fetchall()
+
+        # Fetch activities filtered by the selected location (if provided)
+        if location_id is not None:
+            cursor.execute("SELECT * FROM activities WHERE is_deleted = 0 AND location_id = ?", (location_id,))
+        else:
+            cursor.execute("SELECT * FROM activities WHERE is_deleted = 0")
+
+        activities = cursor.fetchall()
+
+    recipient = 'mate@e.email'  
+    subject = activities[0][1]
+    body = activities[0][2]
+
+    message = Message(subject=subject, recipients=[recipient], body=body)
+
+    try:
+        mail.send(message)
+        flash('Email sent successfully!', 'success')
+    except Exception as e:
+        flash(f'Failed to send email. Error: {str(e)}', 'danger')
+
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)
