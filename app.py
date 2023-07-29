@@ -49,7 +49,7 @@ def index():
 
         activities = cursor.fetchall()
 
-    return render_template('index.html', activities=activities, locations=locations)
+    return render_template('index.html', activities=activities, locations=locations, location_id=int(location_id))
 
 @app.route('/activity/add', methods=['GET', 'POST'])
 def add_activity():
