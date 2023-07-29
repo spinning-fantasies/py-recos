@@ -132,7 +132,7 @@ def send_email():
 
         activities = cursor.fetchall()
 
-    recipient = 'mate@e.email'  
+    recipient = os.getenv("MAIL_RECIPIENT")
     subject = activities[0][1]
     body = activities[0][2]
 
@@ -149,7 +149,7 @@ def send_email():
 @app.route('/send_sms')
 def send_sms():
     # URL of the external web service you want to call
-    url = 'https://smsapi.free-mobile.fr/sendmsg?user=18347461&pass=hOVpAGJQu71fHN&msg=Hello%20World%20!'  # Replace this with the actual API URL
+    url = os.getenv("URL_SMS_API")  # Replace this with the actual API URL
 
     # Make the GET request to the external API
     response = requests.get(url)
