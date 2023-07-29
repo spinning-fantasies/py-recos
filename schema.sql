@@ -31,6 +31,6 @@ INSERT INTO locations (name, latitude, longitude) VALUES
     ('Rennes', 48.117266, -1.6777926);
 
 INSERT INTO activities (name, description, date, time, location_id) VALUES
-    ("boire un café à La Virgule ", "Profitez d'un cadre agréable et tranquille", '2023-07-28', '12:00', 4),
-    ("goûter le kouignaman de chez Traon ", "Découvrez la pâtisserie la plus célèbre de Bretagne", '2023-07-29', '09:30', 4),
-    ("prendre un Rooibos au SEW", "À partir de 17 du jeudi au dimanche", '2023-07-29', '17:00', 4);
+    ("boire un café à La Virgule ", "Profitez d'un cadre agréable et tranquille", '2023-07-28', '12:00', 5),
+    ("goûter le kouignaman de chez Traon ", "Découvrez la pâtisserie la plus célèbre de Bretagne", '2023-07-29', '09:30', 5),
+    ("prendre un Rooibos au SEW", "À partir de 17 du jeudi au dimanche", '2023-07-29', '17:00', 5);
