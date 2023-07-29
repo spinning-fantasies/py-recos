@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_mail import Mail, Message
+import requests
 import sqlite3
 import os
 
@@ -140,6 +141,21 @@ def send_email():
         flash(f'Failed to send email. Error: {str(e)}', 'danger')
 
     return redirect(url_for('index'))
+
+@app.route('/send_sms')
+def send_sms():
+    # URL of the external web service you want to call
+    url = 'https://smsapi.free-mobile.fr/sendmsg?user=18347461&pass=hOVpAGJQu71fHN&msg=Hello%20World%20!'  # Replace this with the actual API URL
+
+    # Make the GET request to the external API
+    response = requests.get(url)
+
+    if response.status_code == 200:  # Successful GET request
+        data = response.json()
+        return jsonify(data)  # Return the JSON response as a Flask JSON response
+    else:
+        return jsonify({'message': 'Failed to fetch data from the external API.'}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
