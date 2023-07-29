@@ -10,7 +10,7 @@
 - [x] Fonction d'ajout, edition, suppression des activités
 - [ ] Fonction d'envoi de SMS (api free mobile pour le POC)
 - [ ] Fonction d'envoi d'email
-- [ ] Développement de la base de données d'activités sur Paris, Grenoble, Morlaix, Montpellier, Nantes
+- [ ] Développement de la base de données d'activités sur Brest, Grenoble, Lannion, Morlaix, Montpellier, Nantes, Paris, Quimper, Rennes
 
 ### Frontend (mobile friendly)
 
