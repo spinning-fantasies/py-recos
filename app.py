@@ -167,13 +167,21 @@ def send_email():
 
     return redirect(url_for('index'))
 
-@app.route('/send_sms/', methods=['GET'])
-def send_sms():
+@app.route('/send_sms/<location_id>', methods=['GET'])
+def send_sms(location_id):
 
     user = sms_api_user
     password = sms_api_password
-    msg = "Hello from Python !"
+    
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
 
+        # Fetch the locations for the location selector
+        cursor.execute("SELECT name FROM locations where id = ?", location_id)
+        location = ''.join([item[0] for item in (cursor.fetchall())])
+        
+        msg = f"Que faire à {location} ?\n- Boire un coup en terrassse\n- Manger un bout au resto\n- Se ballader le long de la rivière"
+    
     if not user or not password or not msg:
         return "Missing parameters. Please provide 'user', 'password', and 'msg' in the query string.", 400
 
@@ -196,7 +204,7 @@ def send_sms():
             flash('SMS sent successfully!', 'success')
             return redirect(url_for('index'))
         else:
-            flash(f'Failed to send email. Error: {str(e)}', 'danger')
+            flash(f'Failed to send SMS. Error: {str(e)}', 'danger')
             return redirect(url_for('index'))
 
     except requests.exceptions.RequestException as e:
