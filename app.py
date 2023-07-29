@@ -46,6 +46,8 @@ if not os.path.exists(DB_NAME):
 @app.route('/')
 def index():
     location_id = request.args.get('location', None)  # Get the location ID from query parameters
+    if location_id != None:
+        location_id = int(location_id)
 
     with sqlite3.connect(DB_NAME) as conn:
         cursor = conn.cursor()
@@ -62,7 +64,6 @@ def index():
 
         activities = cursor.fetchall()
 
-        print(type(location_id))
     return render_template('index.html', activities=activities, locations=locations, location_id=location_id)
 
 @app.route('/activity/add', methods=['GET', 'POST'])
