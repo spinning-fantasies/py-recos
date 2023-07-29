@@ -167,41 +167,39 @@ def send_email():
 
     return redirect(url_for('index'))
 
-@app.route('/send_sms')
-def send_sms(user, password, msg):
+@app.route('/send_sms/', methods=['GET'])
+def send_sms():
+
+    user = sms_api_user
+    password = sms_api_password
+    msg = "Hello from Python !"
+
+    if not user or not password or not msg:
+        return "Missing parameters. Please provide 'user', 'password', and 'msg' in the query string.", 400
+
     try:
-        base_url = 'https://smsapi.free-mobile.fr/sendmsg/'
+        # Replace this URL with the actual URL of the external web service
+        base_url = "https://smsapi.free-mobile.fr/sendmsg"
+
+        # Prepare the parameters to be sent with the GET request
         params = {
             'user': user,
             'password': password,
             'msg': msg
         }
 
+        # Send the GET request
         response = requests.get(base_url, params=params)
-        print(response)
 
         # Check if the request was successful (status code 200)
         if response.status_code == 200:
-            data = response.json()  # Assuming the response contains JSON data
-            return data
+            return f"GET request successful! Response: {response.text}", 200
         else:
-            print(f"Request failed with status code: {response.status_code}")
-            return None
+            return f"GET request failed. Status code: {response.status_code}", 500
 
     except requests.exceptions.RequestException as e:
-        print(f"An error occurred: {e}")
-        return None
-    
-user = sms_api_user
-password = sms_api_password
-msg = "Hello from Python !"
-
-# Replace 'YOUR_API_URL' with the actual base URL you want to make the GET request to
-response_data = send_sms(user, password, msg)
-
-if response_data:
-    # Process and use the response data here
-    print(response_data)
+        # Handle any exception that occurred during the request
+        return f"An error occurred: {e}", 500
 
 if __name__ == '__main__':
     app.run(debug=True)
