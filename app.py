@@ -134,16 +134,20 @@ def delete_activity(id):
 
     return redirect(url_for('index'))
 
-@app.route('/send_email')
-def send_email():
+@app.route('/send_email/<location_id>')
+def send_email(location_id):
     location_id = request.args.get('location', None)  # Get the location ID from query parameters
 
     with sqlite3.connect(DB_NAME) as conn:
         cursor = conn.cursor()
 
         # Fetch the locations for the location selector
-        cursor.execute("SELECT * FROM locations")
-        locations = cursor.fetchall()
+        cursor.execute("SELECT * FROM locations WHERE id = ?", location_id)
+        
+        print(type(cursor.fetchall()))
+        
+        location = cursor.fetchall()
+        print(location)
 
         # Fetch activities filtered by the selected location (if provided)
         if location_id is not None:
@@ -152,12 +156,12 @@ def send_email():
             cursor.execute("SELECT * FROM activities WHERE is_deleted = 0")
 
         activities = cursor.fetchall()
-
-    recipient = mail_recipient
-    subject = activities[0][1]
-    body = activities[0][2]
-
-    message = Message(subject=subject, recipients=[recipient], body=body)
+        
+        recipient = mail_recipient
+        subject = activities[0]
+        body = activities[0][2]
+        
+        message = Message(subject=subject, recipients=[recipient], body=body)
 
     try:
         mail.send(message)
