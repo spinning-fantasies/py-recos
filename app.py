@@ -3,16 +3,20 @@ from flask_mail import Mail, Message
 import requests
 import sqlite3
 import os
+from dotenv import load_dotenv
+
+# Charge les variables d'environnement depuis le fichier .env
+load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'yolo'  # Replace with a secure secret key
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")  # Replace with a secure secret key
 
 # Configuration for Flask-Mail
-app.config['MAIL_SERVER'] = ''
+app.config['MAIL_SERVER'] = os.getenv("MAIL_SERVER")
 app.config['MAIL_PORT'] = 25  # Use the appropriate port for your mail server
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = ''
-app.config['MAIL_PASSWORD'] = ''
+app.config['MAIL_USERNAME'] = os.getenv("MAIL_USERNAME")
+app.config['MAIL_PASSWORD'] = os.getenv("PASSWORD")
 app.config['MAIL_DEFAULT_SENDER'] = 'g'
 
 mail = Mail(app)
